@@ -1,11 +1,10 @@
 <template>
-  <section id="map">
+  <section ref="map" id="map">
     <l-map
-      ref="map"
       :useGlobalLeaflet="false"
       :options="{ zoomControl: false }"
       :zoom="zoom"
-      :center="[47.41322, -1.219482]"
+      :center="[center[0], center[1]]"
       class="map"
     >
       <!-- gives option to choose layers and zoom -->
@@ -21,12 +20,28 @@
         :attribution="tileProvider.attribution"
         layer-type="base"
       />
+      <l-marker
+        v-for="$company in companies"
+        :lat-lng="[$company.latitude, $company.longitude]"
+        :key="$company.id"
+        @click="handleMarkerClick($company)"
+      >
+        <l-icon
+          :icon-size="[24, 24]"
+          :icon-anchor="[12, 24]"
+          :icon-url="
+            company.id === $company.id
+              ? '/icons/marker-secondary.png'
+              : '/icons/marker-primary.png'
+          "
+        />
+      </l-marker>
     </l-map>
-    <div class="company-details" position="bottomleft">
+    <div v-if="company.id" class="company-details">
       <div class="details-head">
         <div class="company-managers">
-          <h4 class="name">Nome da empresa</h4>
-          <h5 class="rep">Nome do representante</h5>
+          <h4 class="name">{{ company.name }}</h4>
+          <h5 class="rep">{{ company.representantive_user }}</h5>
         </div>
         <i class="fi fi-rr-building"></i>
       </div>
@@ -38,7 +53,7 @@
               <span>E-mail</span>
             </div>
             <div class="item-value">
-              <span>valor</span>
+              <span>{{ company.email }}</span>
             </div>
           </li>
           <li class="list-item">
@@ -47,17 +62,17 @@
               <span>Localizaçao</span>
             </div>
             <div class="item-value">
-                <span>valasdasdasr</span>
+              <span>{{ company.city.title }}</span>
             </div>
           </li>
-          <li class="list-item">
+          <li v-if="company.category" class="list-item">
             <div class="item-name">
               <i class="fi fi-rr-star"></i>
               <span>Categoria</span>
             </div>
             <div class="item-value">
               <div class="bg">
-                <span>Categoria</span>
+                <span>{{ company.category.name }}</span>
               </div>
             </div>
           </li>
@@ -75,21 +90,37 @@ import {
   LTileLayer,
   LControlLayers,
   LControlZoom,
-  LPopup,
+  LMarker,
+  LIcon,
 } from "@vue-leaflet/vue-leaflet";
-import { defineComponent } from "vue";
+// import { latLng, icon } from "leaflet";
+import { defineComponent, ref, nextTick } from "vue";
 
 export default defineComponent({
   name: "MainMap",
+  props: {
+    companies: {
+      type: Array,
+      required: true,
+    },
+  },
   components: {
     LMap,
     LTileLayer,
     LControlLayers,
     LControlZoom,
+    LMarker,
+    LIcon,
   },
   setup() {
+    const company = ref({});
+    const center = ref([0, 0]);
+    const timeout = ref(null);
     return {
-      zoom: 16,
+      company,
+      center,
+      timeout,
+      zoom: 5,
       tileProviders: [
         {
           name: "OpenStreetMap",
@@ -120,7 +151,20 @@ export default defineComponent({
       return `https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Google_Maps_pin.svg/274px-Google_Maps_pin.svg.png`;
     },
   },
-  methods: {},
+  methods: {
+    handleMarkerClick(company) {
+      this.company = company;
+      this.center = [company.latitude, company.longitude];
+      clearTimeout(this.timeout);
+      // close company details after 30 seconds
+      this.timeout = setTimeout(() => {
+        this.company = {};
+      }, 3 * 1000);
+    },
+  },
+  beforeMount() {
+    this.center = [this.companies[0].latitude, this.companies[0].longitude];
+  },
 });
 </script>
 <style lang="scss" scoped>
@@ -159,8 +203,10 @@ export default defineComponent({
     z-index: 40;
     padding: 2rem;
     background-color: white;
-    width: 40rem;
+    width: 50rem;
+
     box-sizing: border-box;
+    height: 20.5rem;
 
     @media screen and (max-width: 425px) {
       left: 2rem;
@@ -244,7 +290,13 @@ export default defineComponent({
               background-color: $backgroundLight;
               padding: 0.6rem 3rem;
               border-radius: 3rem;
+              @media screen and (max-width: 320px) {
+                padding: 0.6rem 1rem;
+                background-color: unset;
+              }
               span {
+                white-space: nowrap;
+                text-align: center;
                 color: $labels;
               }
             }
