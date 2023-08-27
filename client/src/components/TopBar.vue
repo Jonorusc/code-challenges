@@ -5,7 +5,7 @@
       <input type="text" placeholder="Pesquisar" />
     </div>
 
-    <button class="add-companies">
+    <button class="add-companies" @click="$emit('open', true)">
       <span class="title">adicionar empresa</span>
       <i class="fi fi-rr-plus"></i>
     </button>
@@ -17,6 +17,7 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "TopBar",
+  emits: ['open'],
   setup() {
     return {};
   },
