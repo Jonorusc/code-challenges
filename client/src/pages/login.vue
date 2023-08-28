@@ -1,7 +1,7 @@
 <template>
   <q-page id="login">
     <img
-      src="~assets/convicti-logo.webp"
+      src="https://convicti.com.br/assets/images/r_footer-logo.webp"
       alt="Convicti logomarca"
       class="logo"
     />
@@ -15,18 +15,16 @@
         <input v-model="form.password" type="password" id="form-password" />
       </div>
 
-      <q-btn
-        class="mt-5"
-        label="Entrar"
-        type="submit"
-        color="secondary"
-      />
+      <q-btn class="mt-5" label="Entrar" type="submit" color="secondary" />
     </q-form>
   </q-page>
 </template>
 
 <script>
 import { defineComponent, ref } from "vue";
+import useApi from "src/composables/api";
+
+const { login } = useApi();
 
 export default defineComponent({
   name: "LoginPage",
@@ -36,25 +34,43 @@ export default defineComponent({
       password: "",
     });
     return {
-      form
+      form,
     };
   },
   methods: {
-    onSubmit() {
-      // Checando se os campos estão preenchidos
+    async onSubmit() {
+      // check if the form is valid
       if (!this.form.email || !this.form.password) {
-        console.log("Preencha todos os campos")
         this.$q.notify({
           color: "info",
           message: "Preencha todos os campos",
-          position: 'bottom',
+          position: "bottom",
           timeout: 2000,
-          progress: true
+          progress: true,
         });
         return;
       }
-      // TODO: implementar login
-      this.$router.push("/");
+
+      try {
+        await login(this.form).then((res) => {
+          localStorage.setItem("token", res.data.token);
+          this.$router.push("/");
+        }).catch((err) => {
+          console.error(err);
+          this.$q.notify({
+            color: "negative",
+            message: 'Ocorreu um erro ao tentar fazer login',
+            position: "bottom",
+            timeout: 2000,
+            progress: true,
+          });
+        });
+      } catch (error) {
+        console.error(
+          `%c${error}`,
+          "background-color: red; color: white; padding: 4px;"
+        );
+      }
     },
   },
 });
@@ -69,6 +85,13 @@ export default defineComponent({
   flex-direction: column;
   row-gap: 8rem;
   padding: 9rem 1rem;
+  .logo {
+    width: 30rem;
+    height: auto;
+    @media screen and (max-width: 375px) {
+      width: 24rem;
+    }
+  }
   #form {
     width: min(90%, 40rem);
     .input {
