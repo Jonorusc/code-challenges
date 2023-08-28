@@ -1,4 +1,4 @@
-# Convici App (convicti)
+# Convicti App (convicti)
 
 A Quasar Project to take my exam for Convicti
 
