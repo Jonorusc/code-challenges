@@ -499,6 +499,7 @@ export default defineComponent({
   .buttons {
     margin-top: 4rem;
     display: flex;
+    justify-content: center;
     column-gap: 0.8rem;
     @media screen and (max-width: 425px) {
       flex-direction: column;
