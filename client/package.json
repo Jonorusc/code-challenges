@@ -2,7 +2,7 @@
   "name": "convicti",
   "version": "0.0.1",
   "description": "A Quasar Project to take my exam for Convicti",
-  "productName": "Convici App",
+  "productName": "Convicti App",
   "author": "João Lucas <joaolucascp16@gmail.com>",
   "private": true,
   "scripts": {
