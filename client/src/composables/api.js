@@ -1,6 +1,15 @@
 import { api } from "boot/axios";
 
 export default function useApi() {
+  const login = async (user) => {
+    try {
+      const response = await api.post("/auth/login", user);
+      return response.data;
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+  
   const getCompanies = async (id = "") => {
     try {
       const response = await api.get(`/companies${id ? "/" + id : ""}`);
@@ -37,7 +46,7 @@ export default function useApi() {
     }
   };
 
-  const getCities = async (state_id) => {
+  const getCitiesByState = async (state_id) => {
     try {
       const response = await api.get(
         `/state-cities/cities?state_id=${state_id}`
@@ -60,11 +69,12 @@ export default function useApi() {
   };
 
   return {
+    login,
     getCompanies,
     addCompany,
     getCategories,
     getStates,
-    getCities,
+    getCitiesByState,
     getCity,
   };
 }
