@@ -104,7 +104,7 @@ export default defineComponent({
       required: true,
     },
     filter: {
-      type: String,
+      type: Number,
       required: false,
     },
   },
@@ -170,8 +170,13 @@ export default defineComponent({
     this.center = [this.companies[0].latitude, this.companies[0].longitude];
   },
   watch: {
-    filter() {
+    filter(val) {
       nextTick(() => {
+        if (val === 0) return;
+        
+        // set company as empty in order to reset the state every time the filter changes
+        this.company = {};
+
         // set company according to filter(company id)
         const company = this.companies.find(
           (company) => company.id === this.filter
