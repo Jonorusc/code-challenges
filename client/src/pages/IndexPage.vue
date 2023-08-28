@@ -35,7 +35,7 @@ export default defineComponent({
   setup() {
     const openModal = ref(false);
     const companies = ref($companies.data);
-    const filterId = ref("");
+    const filterId = ref(0);
     return {
       openModal,
       companies,
