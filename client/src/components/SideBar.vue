@@ -3,7 +3,7 @@
     <nav :class="`${showSideBar ? 'show' : 'hide'}`">
       <div class="logo">
         <img
-          src="~assets/convicti-logo.webp"
+          src="https://convicti.com.br/assets/images/r_footer-logo.webp"
           alt="Convicti logomarca"
           class="logo"
         />
@@ -71,6 +71,7 @@ export default defineComponent({
         color: "positive",
         position: "top",
         message: "Você saiu do sistema!",
+        timeout: 1500
       });
     },
   },
