@@ -11,7 +11,7 @@
           v-for="result in filteredCompanies"
           :key="result.id"
           class="item"
-          @click="$emit('filter', result)"
+          @click="$emit('filter', result), (search = '')"
         >
           <h3>{{ result.name }}</h3>
           <h4>{{ result.representantive_user }}</h4>
@@ -40,7 +40,8 @@ export default defineComponent({
   },
   setup() {
     const search = ref("");
-    return { search };
+    const wait = ref(false);
+    return { search, wait };
   },
   computed: {
     filteredCompanies() {
@@ -50,18 +51,27 @@ export default defineComponent({
     },
   },
   watch: {
-    search(val) {
-      // display something on the screen if there was no data
-      setTimeout(() => {
-        if (this.search.length > 2 && this.filteredCompanies.length === 0) {
-          this.$q.notify({
-            color: "warning",
-            message: `Nenhuma empresa foi encontrada com o nome: "${val}".`,
-            position: "bottom",
-            timeout: 2000,
-          });
-        }
-      }, 1000);
+    search() {
+      if (this.search.length > 2 && this.filteredCompanies.length > 0)
+        this.wait = false;
+      else if (this.search.length > 2 && this.filteredCompanies.length === 0) {
+        if (this.wait) return;
+
+        this.wait = true;
+
+        // display something on the screen if there was no data
+        setTimeout(() => {
+          if (this.search.length > 2 && this.filteredCompanies.length === 0) {
+            this.$q.notify({
+              color: "warning",
+              message: `Nenhuma empresa foi encontrada com o nome: "${this.search}".`,
+              position: "bottom",
+              timeout: 2000,
+            });
+            this.wait = false;
+          }
+        }, 500);
+      }
     },
   },
 });
