@@ -8,7 +8,7 @@ Certifique-se de ter as seguintes ferramentas instaladas em seu sistema:
 
 - [Node.js](https://nodejs.org) - Utilizamos o Node.js para executar o código JavaScript do aplicativo.
 - [npm](https://www.npmjs.com/) - Gerenciador de pacotes JavaScript (geralmente é instalado junto com o Node.js).
-- [yarn]([https://www.npmjs.com/](https://classic.yarnpkg.com/lang/en/docs/install/#windows-stable)) - Gerenciador de pacotes JavaScript.
+- [yarn](https://classic.yarnpkg.com/lang/en/docs/install/) - Gerenciador de pacotes JavaScript.
 
 ## Passos de Instalação
 
