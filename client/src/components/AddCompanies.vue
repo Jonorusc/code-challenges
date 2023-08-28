@@ -94,12 +94,12 @@
                 >
                   <option value="">Selecione</option>
                   <option
-                  v-for="$state in states"
-                  :key="$state.id"
-                  :value="$state.id"
-                >
-                  {{ $state.title + '/' + $state.letter }}
-                </option>
+                    v-for="$state in states"
+                    :key="$state.id"
+                    :value="$state.id"
+                  >
+                    {{ $state.title + "/" + $state.letter }}
+                  </option>
                 </select>
               </div>
               <div class="input">
@@ -110,10 +110,20 @@
                   name="c-cidade"
                   id="c-cidade"
                 >
-                  <option value="">Selecione</option>
-                  <option value="opcao1">Opção 1</option>
-                  <option value="opcao2">Opção 2</option>
-                  <option value="opcao3">Opção 3</option>
+                  <option value="">
+                    {{
+                      company.state_id && !cities.length > 0
+                        ? "Sem dados"
+                        : "Selecione"
+                    }}
+                  </option>
+                  <option
+                    v-for="$citie in cities"
+                    :key="$citie.id"
+                    :value="$citie.id"
+                  >
+                    {{ $citie.title }}
+                  </option>
                 </select>
               </div>
             </div>
@@ -168,6 +178,8 @@ import {
 
 import useApi from "src/composables/api";
 
+const { getCategories, getStates, getCitiesByState, addCompany } = useApi();
+
 export default defineComponent({
   name: "AddCompanies",
   emits: ["close"],
@@ -205,10 +217,8 @@ export default defineComponent({
       }
     });
 
-    const { getCategories, getStates } = useApi();
-
     try {
-      const [categories, states, cities] = await Promise.all([
+      const [categories, states] = await Promise.all([
         getCategories(),
         getStates(),
       ]);
@@ -227,6 +237,30 @@ export default defineComponent({
     }
   },
   methods: {
+    async registerCompany() {
+      try {
+        await addCompany(this.company)
+          .then(() => {
+            this.$q.notify({
+              type: "positive",
+              message: `Empresa ${company.name} cadastrada com sucesso!`,
+              position: "top",
+              timeout: 2000,
+            });
+          })
+          .catch((err) => {
+            console.error(
+              `%c${err.message}`,
+              "background-color: red; color: white; padding: 4px;"
+            );
+          });
+      } catch (err) {
+        console.error(
+          `%cErro nas chamadas de API[Cadastro de Empresas]: ${err.message}`,
+          "background-color: red; color: white; padding: 4px;"
+        );
+      }
+    },
     onReset() {
       this.company = {
         name: "",
@@ -244,8 +278,60 @@ export default defineComponent({
       this.$emit("close", false);
     },
     onSubmit() {
-      console.log("submit");
-      // this.$emit('close', false);
+      const {
+        name,
+        email,
+        cnpj,
+        whatsapp_phone,
+        category_id,
+        state_id,
+        city_id,
+        latitude,
+        longitude,
+      } = this.company;
+      // check if all fields are filled but 'representantive_user' and 'notes'
+
+      if (
+        name &&
+        email &&
+        cnpj &&
+        whatsapp_phone &&
+        category_id &&
+        state_id &&
+        city_id &&
+        latitude &&
+        longitude
+      ) {
+        this.registerCompany();
+        this.onReset();
+      } else {
+        this.$q.notify({
+          type: "negative",
+          message: "Preencha todos os campos obrigatórios",
+          position: "top",
+          timeout: 2000,
+        });
+      }
+    },
+  },
+  watch: {
+    async "company.state_id"(newVal) {
+      // get cities by state
+      try {
+        const cities = await getCitiesByState(newVal);
+        this.cities = cities;
+      } catch (err) {
+        this.$q.notify({
+          type: "negative",
+          message: "Erro ao buscar cidades",
+          position: "top",
+          timeout: 2000,
+        });
+        console.error(
+          `%cErro nas chamadas de API[Cadastro de Empresas]: ${err.message}`,
+          "background-color: red; color: white; padding: 4px;"
+        );
+      }
     },
   },
 });
