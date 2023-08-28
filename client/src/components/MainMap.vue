@@ -103,6 +103,10 @@ export default defineComponent({
       type: Array,
       required: true,
     },
+    filter: {
+      type: String,
+      required: false,
+    },
   },
   components: {
     LMap,
@@ -164,6 +168,17 @@ export default defineComponent({
   },
   beforeMount() {
     this.center = [this.companies[0].latitude, this.companies[0].longitude];
+  },
+  watch: {
+    filter() {
+      nextTick(() => {
+        // set company according to filter(company id)
+        const company = this.companies.find(
+          (company) => company.id === this.filter
+        );
+        this.handleMarkerClick(company);
+      });
+    },
   },
 });
 </script>

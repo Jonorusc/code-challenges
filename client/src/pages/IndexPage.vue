@@ -2,8 +2,12 @@
   <q-page id="sistema">
     <SideBar />
     <div class="content">
-      <Topbar @open="handleModal" />
-      <MainMap :companies="companies"/>
+      <Topbar
+        @open="handleModal"
+        @filter="handleTopbarFilter"
+        :companies="companies"
+      />
+      <MainMap :companies="companies" :filter="filterId" />
     </div>
     <AddCompanies @close="handleModal" :open="openModal" />
   </q-page>
@@ -31,14 +35,19 @@ export default defineComponent({
   setup() {
     const openModal = ref(false);
     const companies = ref($companies.data);
+    const filterId = ref("");
     return {
       openModal,
-      companies
+      companies,
+      filterId,
     };
   },
   methods: {
     handleModal(value) {
       this.openModal = value;
+    },
+    handleTopbarFilter(company) {
+      this.filterId = company.id;
     },
   },
   async mounted() {
@@ -48,15 +57,23 @@ export default defineComponent({
       spinnerColor: "grey",
     });
     const { getCompanies } = useApi();
-    await getCompanies().then(res => {
-      this.companies = res.data;
-    }).catch(err => {
-      console.error(`%c${err.message}`, 'background-color: red; color: white; padding: 4px;');
-      console.log(`%cUsando dados "mockados"`, 'background-color: #0e044a; color: #f8f8f8; padding: 4px;');
-    }).finally(() => {
-      this.$q.loading.hide();
-    });
-    
+    await getCompanies()
+      .then((res) => {
+        this.companies = res.data;
+      })
+      .catch((err) => {
+        console.error(
+          `%c${err.message}`,
+          "background-color: red; color: white; padding: 4px;"
+        );
+        console.log(
+          `%cUsando dados "mockados"`,
+          "background-color: #0e044a; color: #f8f8f8; padding: 4px;"
+        );
+      })
+      .finally(() => {
+        this.$q.loading.hide();
+      });
   },
 });
 </script>
