@@ -47,3 +47,6 @@ Renomeie o arquivo .env.example para .env e configure as variáveis de ambiente 
   yarn dev
   ```
 Apos o loading a página abrirá automáticamente em seu navegador padrão
+
+**Observação**
+ative a opção debug em `MainLayout` para burlar o login
