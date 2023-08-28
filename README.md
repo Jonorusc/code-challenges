@@ -1,3 +1,10 @@
+# O desafio
+A proposta geral do sistema é disponibilizar uma área onde deve ser possível gerenciar e consultar 
+empresas a partir de um mapa geral
+
+![](video.gif)
+
+
 # Instruções de Instalação 
 
 Este guia fornecerá as etapas necessárias para configurar e executar o aplicativo em seu ambiente de desenvolvimento local.
@@ -23,6 +30,10 @@ Certifique-se de ter as seguintes ferramentas instaladas em seu sistema:
 
   ```sh 
   yarn 
+  ```
+ou 
+
+```sh 
   yarn install
   ```
 
