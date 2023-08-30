@@ -15,7 +15,13 @@
         <input v-model="form.password" type="password" id="form-password" />
       </div>
 
-      <q-btn class="mt-5" label="Entrar" type="submit" color="secondary" />
+      <q-btn
+        class="mt-5"
+        label="Entrar"
+        type="submit"
+        color="secondary"
+        :disabled="login"
+      />
     </q-form>
   </q-page>
 </template>
@@ -33,8 +39,10 @@ export default defineComponent({
       email: "",
       password: "",
     });
+    const login = ref(false);
     return {
       form,
+      login,
     };
   },
   methods: {
@@ -52,20 +60,40 @@ export default defineComponent({
       }
 
       try {
-        await login(this.form).then((res) => {
-          localStorage.setItem("token", res.data.token);
+        this.login = true;
+        this.$q.loading.show({
+          message: "Fazendo login...",
+          spinnerSize: 100,
+          spinnerColor: "grey",
+        });
+        await login({ ...this.form }).then((res) => {
+          this.login = false;
+          this.$q.loading.hide();
+
+          if (!res.access_token) {
+            this.$q.notify({
+              color: "negative",
+              message: res.message,
+              position: "bottom",
+              timeout: 2000,
+              progress: true,
+            });
+            return;
+          }
+
+          localStorage.setItem("token", res.access_token);
           this.$router.push("/");
-        }).catch((err) => {
-          console.error(err);
           this.$q.notify({
-            color: "negative",
-            message: 'Ocorreu um erro ao tentar fazer login',
+            color: "positive",
+            message: "Login realizado com sucesso!",
             position: "bottom",
             timeout: 2000,
             progress: true,
           });
         });
       } catch (error) {
+        this.login = false;
+        this.$q.loading.hide();
         console.error(
           `%c${error}`,
           "background-color: red; color: white; padding: 4px;"

@@ -20,22 +20,24 @@
         :attribution="tileProvider.attribution"
         layer-type="base"
       />
-      <l-marker
-        v-for="$company in companies"
-        :lat-lng="[$company.latitude, $company.longitude]"
-        :key="$company.id"
-        @click="handleMarkerClick($company)"
-      >
-        <l-icon
-          :icon-size="[24, 24]"
-          :icon-anchor="[12, 24]"
-          :icon-url="
-            company.id === $company.id
-              ? '/icons/marker-secondary.png'
-              : '/icons/marker-primary.png'
-          "
-        />
-      </l-marker>
+      <template v-if="companies.length > 0">
+        <l-marker
+          v-for="$company in companies"
+          :lat-lng="[$company.latitude, $company.longitude]"
+          :key="$company.id"
+          @click="handleMarkerClick($company)"
+        >
+          <l-icon
+            :icon-size="[24, 24]"
+            :icon-anchor="[12, 24]"
+            :icon-url="
+              company.id === $company.id
+                ? '/icons/marker-secondary.png'
+                : '/icons/marker-primary.png'
+            "
+          />
+        </l-marker>
+      </template>
     </l-map>
     <div v-if="company.id" class="company-details">
       <div class="details-head">
@@ -124,7 +126,7 @@ export default defineComponent({
       company,
       center,
       timeout,
-      zoom: 5,
+      zoom: 8,
       tileProviders: [
         {
           name: "OpenStreetMap",
@@ -166,14 +168,16 @@ export default defineComponent({
       }, 3 * 1000);
     },
   },
-  beforeMount() {
-    this.center = [this.companies[0].latitude, this.companies[0].longitude];
-  },
   watch: {
+    companies() {
+      nextTick(() => {
+      this.center = [this.companies[0].latitude, this.companies[0].longitude];
+    });
+    },
     filter(val) {
       nextTick(() => {
         if (val === 0) return;
-        
+
         // set company as empty in order to reset the state every time the filter changes
         this.company = {};
 

@@ -2,8 +2,12 @@ import { api } from "boot/axios";
 
 export default function useApi() {
   const login = async (user) => {
+    // exclude the Authorization header
+    const headers = {
+      "Content-Type": "application/json"
+    };
     try {
-      const response = await api.post("/auth/login", user);
+      const response = await api.post("/auth/login", user, { headers });
       return response.data;
     } catch (error) {
       throw new Error(error);

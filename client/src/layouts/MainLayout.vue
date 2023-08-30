@@ -17,7 +17,7 @@ export default defineComponent({
     return {
       // active this when you want to avoid the token check
       // (off course, this is not a good practice and i'm doind this just for the sake of simplicity during my app development)
-      debug: true,
+      debug: false,
     };
   },
   beforeMount() {
@@ -42,6 +42,9 @@ export default defineComponent({
         // not expired
       }
     }
+  },
+  mounted() {
+    this.$q.loading.hide();
   },
 });
 </script>

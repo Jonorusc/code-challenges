@@ -98,7 +98,7 @@
                     :key="$state.id"
                     :value="$state.id"
                   >
-                    {{ $state.title + "/" + $state.letter }}
+                    {{ $state.letter }}
                   </option>
                 </select>
               </div>
@@ -169,7 +169,7 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent, nextTick, ref } from "vue";
 // mocks
 import {
   categories as $categories,
@@ -210,57 +210,35 @@ export default defineComponent({
 
     return { categories, states, company, cities };
   },
-  async mounted() {
-    this.$refs.wrapper.addEventListener("click", (e) => {
-      if (e.target.id === "addCompanies") {
-        this.$emit("close", false);
-      }
-    });
+  mounted() {
+    nextTick(async () => {
+      this.$refs.wrapper.addEventListener("click", (e) => {
+        if (e.target.id === "addCompanies") {
+          this.$emit("close", false);
+        }
+      });
 
-    try {
-      const [categories, states] = await Promise.all([
-        getCategories(),
-        getStates(),
-      ]);
-
-      this.categories = categories;
-      this.states = states;
-    } catch (err) {
-      console.error(
-        `%cErro nas chamadas de API[Cadastro de Empresas]: ${err.message}`,
-        "background-color: red; color: white; padding: 4px;"
-      );
-      console.log(
-        `%cUsando dados 'mockados'`,
-        "background-color: #0e044a; color: #f8f8f8; padding: 4px;"
-      );
-    }
-  },
-  methods: {
-    async registerCompany() {
       try {
-        await addCompany(this.company)
-          .then(() => {
-            this.$q.notify({
-              type: "positive",
-              message: `Empresa ${company.name} cadastrada com sucesso!`,
-              position: "top",
-              timeout: 2000,
-            });
-          })
-          .catch((err) => {
-            console.error(
-              `%c${err.message}`,
-              "background-color: red; color: white; padding: 4px;"
-            );
-          });
+        const [categories, states] = await Promise.all([
+          getCategories(),
+          getStates(),
+        ]);
+
+        this.categories = categories;
+        this.states = states;
       } catch (err) {
         console.error(
           `%cErro nas chamadas de API[Cadastro de Empresas]: ${err.message}`,
           "background-color: red; color: white; padding: 4px;"
         );
+        console.log(
+          `%cUsando dados 'mockados'`,
+          "background-color: #0e044a; color: #f8f8f8; padding: 4px;"
+        );
       }
-    },
+    });
+  },
+  methods: {
     onReset() {
       this.company = {
         name: "",
@@ -277,7 +255,7 @@ export default defineComponent({
       };
       this.$emit("close", false);
     },
-    onSubmit() {
+    async onSubmit() {
       const {
         name,
         email,
@@ -302,8 +280,45 @@ export default defineComponent({
         latitude &&
         longitude
       ) {
-        this.registerCompany();
-        this.onReset();
+        this.$q.loading?.show({
+          message: "Cadastrando empresa...",
+          spinnerSize: 100,
+          spinnerColor: "grey",
+        });
+
+        try {
+          await addCompany(this.company)
+            .then((res) => {
+              this.$q.notify({
+                type: "positive",
+                message: `Empresa ${res.name} cadastrada com sucesso!`,
+                position: "top",
+                timeout: 2000,
+              });
+            })
+            .catch((err) => {
+              this.$q.notify({
+                message: err.message,
+                color: "warning",
+                icon: "info",
+                position: "top",
+                timeout: 2000,
+              });
+              console.error(
+                `%c${err.message}`,
+                "background-color: red; color: white; padding: 4px;"
+              );
+            }).finally(() => {
+              this.$q.loading.hide();
+              this.$emit("close", false);
+            });
+        } catch (err) {
+          this.$q.loading.hide();
+          console.error(
+            `%cErro nas chamadas de API[Cadastro de Empresas]: ${err.message}`,
+            "background-color: red; color: white; padding: 4px;"
+          );
+        }
       } else {
         this.$q.notify({
           type: "negative",
@@ -316,11 +331,19 @@ export default defineComponent({
   },
   watch: {
     async "company.state_id"(newVal) {
+      if (!newVal) return;
       // get cities by state
       try {
+        this.$q.loading.show({
+          message: "Carregando cidades...",
+          spinnerSize: 100,
+          spinnerColor: "grey",
+        });
         const cities = await getCitiesByState(newVal);
         this.cities = cities;
+        this.$q.loading.hide();
       } catch (err) {
+        this.$q.loading.hide();
         this.$q.notify({
           type: "negative",
           message: "Erro ao buscar cidades",
