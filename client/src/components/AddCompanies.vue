@@ -295,6 +295,7 @@ export default defineComponent({
                 position: "top",
                 timeout: 2000,
               });
+              this.$emit('success', 'Empresa cadastrada com sucesso!')
             })
             .catch((err) => {
               this.$q.notify({
