@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent, nextTick, ref } from "vue";
 // componentes
 import SideBar from "components/SideBar.vue";
 import Topbar from "components/TopBar.vue";
@@ -48,15 +48,11 @@ export default defineComponent({
     };
   },
   methods: {
-    async handleRegisterCompany() {
-      // fetch companies again
-      this.$q.loading.show({
-        message: "Carregando Empresas...",
-        spinnerSize: 100,
-        spinnerColor: "grey",
+    handleRegisterCompany(company) {
+      nextTick(async () => {
+        // fetch companies again
+        await this.fetchCompanies(company);
       });
-
-      await this.fetchCompanies();
     },
     handleModal(value) {
       this.openModal = value;
@@ -64,8 +60,13 @@ export default defineComponent({
     handleTopbarFilter(company) {
       this.filterId = company.id;
     },
-    async fetchCompanies() {
+    async fetchCompanies(company = {}) {
       try {
+        this.$q.loading.show({
+          message: "Carregando Empresas...",
+          spinnerSize: 100,
+          spinnerColor: "grey",
+        });
         await getCompanies()
           .then((res) => {
             this.companies = res.data;
@@ -91,22 +92,41 @@ export default defineComponent({
           "background-color: red; color: white; padding: 4px;"
         );
       }
+      if(!company.id) return;
+      // ask if the user wanna visualize the company in the map
+      this.$q.notify({
+        type: "success",
+        progress: true,
+        message: `Deseja visualizar a empresa ${company.name} no mapa?`,
+        timeout: 5000,
+        actions: [
+          {
+            label: "Sim",
+            handler: () => {
+              this.filterId = company.id;
+            },
+            color: "positive",
+          },
+          {
+            label: "Não",
+            handler: () => {},
+            color: "negative",
+          },
+        ],
+      });
     },
   },
-  async mounted() {
-    this.$q.notify({
-      message: "Bem vindo ao sistema de empresas!",
-      color: "primary",
-      icon: "info",
-      position: "top",
-      timeout: 2000,
+  mounted() {
+    nextTick(async () => {
+      this.$q.notify({
+        message: "Bem vindo ao sistema de empresas!",
+        color: "primary",
+        icon: "info",
+        position: "top",
+        timeout: 2000,
+      });
+      await this.fetchCompanies();
     });
-    this.$q.loading?.show({
-      message: "Carregando Empresas...",
-      spinnerSize: 100,
-      spinnerColor: "grey",
-    });
-    await this.fetchCompanies()
   },
 });
 </script>
