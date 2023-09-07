@@ -162,10 +162,10 @@ export default defineComponent({
       this.company = company;
       this.center = [company.latitude, company.longitude];
       clearTimeout(this.timeout);
-      // close company details after 30 seconds
+      // close company details after 25 seconds
       this.timeout = setTimeout(() => {
         this.company = {};
-      }, 3 * 1000);
+      }, 25 * 1000);
     },
   },
   watch: {
