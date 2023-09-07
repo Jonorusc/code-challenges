@@ -2,24 +2,20 @@ import { api } from "boot/axios";
 
 export default function useApi() {
   const login = async (user) => {
-    // exclude the Authorization header
-    const headers = {
-      "Content-Type": "application/json"
-    };
     try {
-      const response = await api.post("/auth/login", user, { headers });
+      const response = await api.post("/auth/login", user);
       return response.data;
     } catch (error) {
-      throw new Error(error);
+      throw error.response ? error.response.data : error;
     }
   };
-  
+
   const getCompanies = async (id = "") => {
     try {
       const response = await api.get(`/companies${id ? "/" + id : ""}`);
       return response.data;
     } catch (error) {
-      throw new Error(error);
+      throw error.response ? error.response.data : error;
     }
   };
 
@@ -28,7 +24,7 @@ export default function useApi() {
       const response = await api.post("/companies", company);
       return response.data;
     } catch (error) {
-      throw new Error(error);
+      throw error.response ? error.response.data : error;
     }
   };
 
@@ -37,7 +33,7 @@ export default function useApi() {
       const response = await api.get(`/categories`);
       return response.data;
     } catch (error) {
-      throw new Error(error);
+      throw error.response ? error.response.data : error;
     }
   };
 
@@ -46,7 +42,7 @@ export default function useApi() {
       const response = await api.get(`/state-cities/states`);
       return response.data;
     } catch (error) {
-      throw new Error(error);
+      throw error.response ? error.response.data : error;
     }
   };
 
@@ -57,7 +53,7 @@ export default function useApi() {
       );
       return response.data;
     } catch (error) {
-      throw new Error(error);
+      throw error.response ? error.response.data : error;
     }
   };
 
@@ -68,7 +64,7 @@ export default function useApi() {
       );
       return response.data;
     } catch (error) {
-      throw new Error(error);
+      throw error.response ? error.response.data : error;
     }
   };
 
