@@ -66,31 +66,36 @@ export default defineComponent({
           spinnerSize: 100,
           spinnerColor: "grey",
         });
-        await login({ ...this.form }).then((res) => {
-          this.login = false;
-          this.$q.loading.hide();
+        await login({ ...this.form })
+          .then((res) => {
+            this.login = false;
+            this.$q.loading.hide();
 
-          if (!res.access_token) {
+            if (!res.access_token) {
+              this.$q.notify({
+                color: "negative",
+                message: "Erro inesperado ao fazer login, tente novamente",
+                position: "bottom",
+                timeout: 4000,
+                progress: true,
+              });
+              return;
+            }
+
+            localStorage.setItem("token", res.access_token);
+            this.$router.push("/");
+          })
+          .catch((err) => {
+            this.login = false;
+            this.$q.loading.hide();
             this.$q.notify({
               color: "negative",
-              message: res.message,
+              message: err.message,
               position: "bottom",
-              timeout: 2000,
+              timeout: 4000,
               progress: true,
             });
-            return;
-          }
-
-          localStorage.setItem("token", res.access_token);
-          this.$router.push("/");
-          this.$q.notify({
-            color: "positive",
-            message: "Login realizado com sucesso!",
-            position: "bottom",
-            timeout: 2000,
-            progress: true,
           });
-        });
       } catch (error) {
         this.login = false;
         this.$q.loading.hide();
@@ -100,6 +105,9 @@ export default defineComponent({
         );
       }
     },
+  },
+  mounted() {
+    this.$q.loading.hide();
   },
 });
 </script>
