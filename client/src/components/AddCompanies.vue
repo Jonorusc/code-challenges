@@ -7,52 +7,68 @@
           <div class="left">
             <div class="input">
               <label for="c-name">Nome</label>
-              <input
+              <q-input
                 type="text"
+                dense
+                standout
                 v-model="company.name"
                 id="c-name"
                 name="c-name"
                 required
+                :rules="[(val) => !!val || 'Campo obrigatório']"
               />
             </div>
 
             <div class="input">
               <label for="c-cnpj">CNPJ</label>
-              <input
+              <q-input
                 type="text"
+                dense
+                standout
                 v-model="company.cnpj"
                 id="c-cnpj"
                 name="c-cnpj"
                 required
+                :rules="[(val) => !!val || 'Campo obrigatório']"
+                mask="##.###.###/####-##"
               />
             </div>
 
             <div class="input">
               <label for="c-email">E-mail</label>
-              <input
+              <q-input
+                dense
+                standout
                 type="email"
                 v-model="company.email"
                 id="c-email"
                 name="c-email"
                 required
+                :rules="[(val) => !!val || 'Campo obrigatório']"
               />
             </div>
 
             <div class="input">
               <label for="c-whatsapp">Whatsapp</label>
-              <input
+              <q-input
+                dense
+                standout
                 type="text"
                 v-model="company.whatsapp_phone"
                 id="c-whatsapp"
                 name="c-whatsapp"
                 required
+                :rules="[(val) => !!val || 'Campo obrigatório']"
+                mask="(##) #####-####"
               />
             </div>
 
             <div class="input">
               <label for="c-rep">Representante</label>
-              <input
+              <q-input
                 type="text"
+                dense
+                standout
                 v-model="company.representantive_user"
                 id="c-rep"
                 name="c-rep"
@@ -62,100 +78,112 @@
             <div class="twice">
               <div class="input">
                 <label for="c-lat">Latitude</label>
-                <input
+                <q-input
                   type="text"
+                  dense
+                  standout
                   v-model="company.latitude"
                   id="c-lat"
                   name="c-lat"
                   class="short"
                   required
+                  :rules="[(val) => !!val || 'Campo obrigatório']"
                 />
               </div>
               <div class="input">
                 <label for="c-log">Longitude</label>
-                <input
+                <q-input
                   type="text"
+                  dense
+                  standout
                   v-model="company.longitude"
                   id="c-log"
                   name="c-log"
                   class="short"
                   required
+                  :rules="[(val) => !!val || 'Campo obrigatório']"
                 />
               </div>
             </div>
             <div class="twice">
               <div class="input">
                 <label for="c-estado">Estado</label>
-                <select
-                  v-model="company.state_id"
-                  class="input-select"
-                  name="c-estado"
+                <q-select
                   id="c-estado"
-                >
-                  <option value="">Selecione</option>
-                  <option
-                    v-for="$state in states"
-                    :key="$state.id"
-                    :value="$state.id"
-                  >
-                    {{ $state.letter }}
-                  </option>
-                </select>
+                  v-model="company.state_id"
+                  name="select-estado"
+                  dense
+                  option-value="id"
+                  option-label="letter"
+                  emit-value
+                  standout
+                  map-options
+                  :options="states"
+                  :rules="[(val) => !!val || 'Campo obrigatório']"
+                  label="Selecione"
+                  use-input
+                  input-debounce="0"
+                  @filter="filterStates"
+                />
               </div>
               <div class="input">
                 <label for="c-cidade">Cidade</label>
-                <select
-                  v-model="company.city_id"
-                  class="input-select"
-                  name="c-cidade"
+                <q-select
                   id="c-cidade"
+                  v-model="company.city_id"
+                  name="select-cidade"
+                  dense
+                  standout
+                  option-value="id"
+                  option-label="title"
+                  emit-value
+                  map-options
+                  :options="cities"
+                  :rules="[(val) => !!val || 'Campo obrigatório']"
+                  label="Selecione"
+                  use-input
+                  input-debounce="0"
+                  @filter="filterCities"
                 >
-                  <option value="">
-                    {{
-                      company.state_id && !cities.length > 0
-                        ? "Sem dados"
-                        : "Selecione"
-                    }}
-                  </option>
-                  <option
-                    v-for="$citie in cities"
-                    :key="$citie.id"
-                    :value="$citie.id"
-                  >
-                    {{ $citie.title }}
-                  </option>
-                </select>
+                  <template #no-option>
+                    <q-item>
+                      <q-item-section class="text-italic text-grey">
+                        Dados indisponíveis
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
               </div>
             </div>
           </div>
           <div class="right">
             <div class="input">
               <label for="c-observations">Observações</label>
-              <input
+              <q-input
+                dense
+                standout
                 type="text"
                 v-model="company.notes"
                 id="c-observations"
                 name="c-observations"
               />
             </div>
-            <div class="input">
+            <div class="input mt-8">
               <label for="c-category">Categoria</label>
-              <select
-                class="input-select"
-                name="c-category"
+              <q-select
                 id="c-category"
-                required
                 v-model="company.category_id"
-              >
-                <option value="">Selecione</option>
-                <option
-                  v-for="$category in categories"
-                  :key="$category.id"
-                  :value="$category.id"
-                >
-                  {{ $category.name }}
-                </option>
-              </select>
+                name="select-category"
+                dense
+                option-value="id"
+                option-label="name"
+                emit-value
+                standout
+                map-options
+                :options="categories"
+                :rules="[(val) => !!val || 'Campo obrigatório']"
+                label="Selecione"
+              />
             </div>
           </div>
         </div>
@@ -169,7 +197,7 @@
 </template>
 
 <script>
-import { defineComponent, nextTick, ref } from "vue";
+import { defineComponent, nextTick } from "vue";
 // mocks
 import {
   categories as $categories,
@@ -182,33 +210,33 @@ const { getCategories, getStates, getCitiesByState, addCompany } = useApi();
 
 export default defineComponent({
   name: "AddCompanies",
-  emits: ["close"],
+  emits: ["close", "success"],
   props: {
     open: {
       type: Boolean,
       default: false,
     },
   },
-  setup() {
-    const categories = ref($categories);
-    const states = ref($states);
-    const cities = ref([]);
-
-    const company = ref({
-      name: "",
-      email: "",
-      cnpj: "",
-      whatsapp_phone: "",
-      representantive_user: "",
-      category_id: "",
-      city_id: "",
-      state_id: "",
-      latitude: "",
-      longitude: "",
-      notes: "",
-    });
-
-    return { categories, states, company, cities };
+  // using `data` in order to reactively update the lists
+  data() {
+    return {
+      categories: $categories.data,
+      states: $states,
+      company: {
+        name: "",
+        email: "",
+        cnpj: "",
+        whatsapp_phone: "",
+        representantive_user: "",
+        category_id: "",
+        city_id: "",
+        state_id: "",
+        latitude: "",
+        longitude: "",
+        notes: "",
+      },
+      cities: [],
+    };
   },
   mounted() {
     nextTick(async () => {
@@ -239,20 +267,57 @@ export default defineComponent({
     });
   },
   methods: {
+    // add option to filter in q-select
+    filterStates(val, update) {
+      if (!Array.isArray(this.states)) {
+        return;
+      }
+
+      const stateCopy = [...this.states];
+
+      if (val === "") {
+        update(() => {
+          this.states = stateCopy;
+        });
+        return;
+      }
+
+      update(() => {
+        const needle = val.toLowerCase();
+
+        this.states = stateCopy.filter((v) => {
+          const stringValue = String(v.letter);
+          return stringValue.toLowerCase().includes(needle);
+        });
+      });
+    },
+    filterCities(val, update) {
+      if (!Array.isArray(this.cities)) {
+        return;
+      }
+
+      const stateCopy = [...this.cities];
+
+      if (val === "") {
+        update(() => {
+          this.cities = stateCopy;
+        });
+        return;
+      }
+
+      update(() => {
+        const needle = val.toLowerCase();
+
+        this.cities = stateCopy.filter((v) => {
+          const stringValue = String(v.title);
+          return stringValue.toLowerCase().includes(needle);
+        });
+      });
+    },
     onReset() {
-      this.company = {
-        name: "",
-        email: "",
-        cnpj: "",
-        whatsapp_phone: "",
-        representantive_user: "",
-        category_id: "",
-        city_id: "",
-        state_id: "",
-        latitude: "",
-        longitude: "",
-        notes: "",
-      };
+      this.company = Object.fromEntries(
+        Object.keys(this.company).map((key) => [key, ""])
+      );
       this.$emit("close", false);
     },
     async onSubmit() {
@@ -280,7 +345,14 @@ export default defineComponent({
         latitude &&
         longitude
       ) {
-        this.$q.loading?.show({
+        // before submit remove mask from cnpj (mask="##.###.###/####-##") and whatsapp_phone (mask="(##) #####-####")
+        this.company.cnpj = this.company.cnpj.replace(/\D/g, "");
+        this.company.whatsapp_phone = this.company.whatsapp_phone.replace(
+          /\D/g,
+          ""
+        );
+
+        this.$q.loading.show({
           message: "Cadastrando empresa...",
           spinnerSize: 100,
           spinnerColor: "grey",
@@ -295,23 +367,24 @@ export default defineComponent({
                 position: "top",
                 timeout: 2000,
               });
-              this.$emit('success', 'Empresa cadastrada com sucesso!')
+              this.$emit("success", res);
+              this.$emit("close", false);
             })
             .catch((err) => {
-              this.$q.notify({
-                message: err.message,
-                color: "warning",
-                icon: "info",
-                position: "top",
-                timeout: 2000,
+              const { errors } = err;
+
+              Object.keys(errors).forEach((key) => {
+                this.$q.notify({
+                  type: "warning",
+                  message: errors[key][0],
+                  position: "top-right",
+                  timeout: 7000,
+                  progress: true,
+                });
               });
-              console.error(
-                `%c${err.message}`,
-                "background-color: red; color: white; padding: 4px;"
-              );
-            }).finally(() => {
+            })
+            .finally(() => {
               this.$q.loading.hide();
-              this.$emit("close", false);
             });
         } catch (err) {
           this.$q.loading.hide();
@@ -454,6 +527,7 @@ export default defineComponent({
       color: $labels;
       margin-bottom: 0.5rem;
     }
+
     input {
       text-indent: 0.6rem;
       font-size: 1.8rem;
@@ -465,7 +539,7 @@ export default defineComponent({
       height: 3.5rem;
       border-radius: 0.4rem;
       box-shadow: 0 0 0.3rem rgba(0, 0, 0, 0.1);
-      width: 30rem;
+      width: 33rem;
 
       &::placeholder {
         color: $labels;
