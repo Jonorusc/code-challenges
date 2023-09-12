@@ -267,6 +267,11 @@ export default defineComponent({
     });
   },
   methods: {
+    resetForm() {
+      this.company = Object.fromEntries(
+        Object.keys(this.company).map((key) => [key, ""])
+      );
+    },
     // add option to filter in q-select
     filterStates(val, update) {
       if (!Array.isArray(this.states)) {
@@ -315,9 +320,7 @@ export default defineComponent({
       });
     },
     onReset() {
-      this.company = Object.fromEntries(
-        Object.keys(this.company).map((key) => [key, ""])
-      );
+      this.resetForm();
       this.$emit("close", false);
     },
     async onSubmit() {
@@ -368,6 +371,7 @@ export default defineComponent({
                 timeout: 2000,
               });
               this.$emit("success", res);
+              this.resetForm();
               this.$emit("close", false);
             })
             .catch((err) => {
