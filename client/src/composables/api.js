@@ -3,7 +3,11 @@ import { api } from "boot/axios";
 export default function useApi() {
   const login = async (user) => {
     try {
-      const response = await api.post("/auth/login", user);
+      const response = await api.post("/auth/login", user, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       return response.data;
     } catch (error) {
       throw error.response ? error.response.data : error;
