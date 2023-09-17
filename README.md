@@ -21,19 +21,17 @@ Certifique-se de ter as seguintes ferramentas instaladas em seu sistema:
 
 1. **Clone o repositório:**
 
-   ```sh
-   git clone https://github.com/Jonorusc/convicti-test.git
-   cd convicti-test
-   cd client
-   ```
-2. **Instale as dependências:**
+```sh
+git clone https://github.com/Jonorusc/convicti-test.git
+cd convicti-test
+cd client
+```
+
+3. **Instale as dependências:**
 
   ```sh 
   yarn 
-  ```
-ou 
-
-```sh 
+  ## OR
   yarn install
   ```
 
@@ -47,6 +45,3 @@ Renomeie o arquivo .env.example para .env e configure as variáveis de ambiente 
   yarn dev
   ```
 Apos o loading a página abrirá automáticamente em seu navegador padrão
-
-**Observação**
-ative a opção debug em `MainLayout` para burlar o login
