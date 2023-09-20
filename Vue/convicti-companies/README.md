@@ -19,9 +19,9 @@ Make sure you have the following tools installed on your system:
 1. **Clone the repository:**
 
    ```sh
-   git clone https://github.com/Jonorusc/convicti-test.git
-   cd convicti-test
-   cd client
+   git clone https://github.com/Jonorusc/code-challenges.git
+   cd vue
+   cd convicti-companies
    ```
 
 2. **Install dependencies:**
