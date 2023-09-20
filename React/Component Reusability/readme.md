@@ -2,6 +2,8 @@
 
 This project demonstrates component reusability in a React application. It includes a modal component that can be easily integrated into your web applications.
 
+![Print](./print.png)
+
 ## Table of Contents
 
 - [Getting Started](#getting-started)
