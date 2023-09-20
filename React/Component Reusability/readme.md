@@ -25,7 +25,7 @@ git clone https://github.com/Jonorusc/code-challenges.git
 
 So i recommed to download the project and run it locally using Live Server `Open with Live Server` option in VS Code.
 
-3. **Usage**
+## Usage
 
 This project includes a reusable modal component (Modal) that you can easily integrate into your React applications. Here's how to use it:
 
