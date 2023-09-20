@@ -27,54 +27,54 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
-  name: "TopBar",
-  emits: ["open", "filter"],
+  name: 'TopBar',
+  emits: ['open', 'filter'],
   props: {
     companies: {
       type: Array,
-      required: true,
-    },
+      required: true
+    }
   },
   setup() {
-    const search = ref("");
-    const wait = ref(false);
-    return { search, wait };
+    const search = ref('')
+    const wait = ref(false)
+    return { search, wait }
   },
   computed: {
     filteredCompanies() {
       return this.companies?.filter((company) =>
         company.name.toLowerCase().includes(this.search.toLowerCase())
-      );
-    },
+      )
+    }
   },
   watch: {
     search() {
       if (this.search.length > 2 && this.filteredCompanies.length > 0)
-        this.wait = false;
+        this.wait = false
       else if (this.search.length > 2 && this.filteredCompanies.length === 0) {
-        if (this.wait) return;
+        if (this.wait) return
 
-        this.wait = true;
+        this.wait = true
 
         // display something on the screen if there was no data
         setTimeout(() => {
           if (this.search.length > 2 && this.filteredCompanies.length === 0) {
             this.$q.notify({
-              color: "warning",
+              color: 'warning',
               message: `Nenhuma empresa foi encontrada com o nome: "${this.search}".`,
-              position: "bottom",
-              timeout: 2000,
-            });
-            this.wait = false;
+              position: 'bottom',
+              timeout: 2000
+            })
+            this.wait = false
           }
-        }, 500);
+        }, 500)
       }
-    },
-  },
-});
+    }
+  }
+})
 </script>
 <style lang="scss" scoped>
 #topbar {
@@ -123,7 +123,7 @@ export default defineComponent({
       outline: none;
       background-color: inherit;
       width: 100%;
-      font-family: "Nunito Sans", sans-serif;
+      font-family: 'Nunito Sans', sans-serif;
       font-size: 1.6rem;
       color: $primary;
       font-weight: 600;

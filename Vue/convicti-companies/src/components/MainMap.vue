@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import "leaflet/dist/leaflet.css";
+import 'leaflet/dist/leaflet.css'
 
 import {
   LMap,
@@ -93,22 +93,22 @@ import {
   LControlLayers,
   LControlZoom,
   LMarker,
-  LIcon,
-} from "@vue-leaflet/vue-leaflet";
+  LIcon
+} from '@vue-leaflet/vue-leaflet'
 // import { latLng, icon } from "leaflet";
-import { defineComponent, ref, nextTick } from "vue";
+import { defineComponent, ref, nextTick } from 'vue'
 
 export default defineComponent({
-  name: "MainMap",
+  name: 'MainMap',
   props: {
     companies: {
       type: Array,
-      required: true,
+      required: true
     },
     filter: {
       type: Number,
-      required: false,
-    },
+      required: false
+    }
   },
   components: {
     LMap,
@@ -116,12 +116,12 @@ export default defineComponent({
     LControlLayers,
     LControlZoom,
     LMarker,
-    LIcon,
+    LIcon
   },
   setup() {
-    const company = ref({});
-    const center = ref([0, 0]);
-    const timeout = ref(null);
+    const company = ref({})
+    const center = ref([0, 0])
+    const timeout = ref(null)
     return {
       company,
       center,
@@ -129,67 +129,67 @@ export default defineComponent({
       zoom: 8,
       tileProviders: [
         {
-          name: "OpenStreetMap",
+          name: 'OpenStreetMap',
           visible: true,
           attribution:
             '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-          url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+          url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
         },
         {
-          name: "OpenTopoMap",
+          name: 'OpenTopoMap',
           visible: false,
-          url: "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
+          url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
           attribution:
-            'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)',
+            'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
         },
         {
-          name: "Satelite",
+          name: 'Satelite',
           visible: false,
-          url: "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+          url: 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
           attribution:
-            'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)',
-        },
-      ],
-    };
+            'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+        }
+      ]
+    }
   },
   computed: {
     iconUrl() {
-      return `https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Google_Maps_pin.svg/274px-Google_Maps_pin.svg.png`;
-    },
+      return `https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Google_Maps_pin.svg/274px-Google_Maps_pin.svg.png`
+    }
   },
   methods: {
     handleMarkerClick(company) {
-      this.company = company;
-      this.center = [company.latitude, company.longitude];
-      clearTimeout(this.timeout);
+      this.company = company
+      this.center = [company.latitude, company.longitude]
+      clearTimeout(this.timeout)
       // close company details after 25 seconds
       this.timeout = setTimeout(() => {
-        this.company = {};
-      }, 25 * 1000);
-    },
+        this.company = {}
+      }, 25 * 1000)
+    }
   },
   watch: {
     companies() {
       nextTick(() => {
-      this.center = [this.companies[0].latitude, this.companies[0].longitude];
-    });
+        this.center = [this.companies[0].latitude, this.companies[0].longitude]
+      })
     },
     filter(val) {
       nextTick(() => {
-        if (val === 0) return;
+        if (val === 0) return
 
         // set company as empty in order to reset the state every time the filter changes
-        this.company = {};
+        this.company = {}
 
         // set company according to filter(company id)
         const company = this.companies.find(
           (company) => company.id === this.filter
-        );
-        this.handleMarkerClick(company);
-      });
-    },
-  },
-});
+        )
+        this.handleMarkerClick(company)
+      })
+    }
+  }
+})
 </script>
 <style lang="scss" scoped>
 #map {

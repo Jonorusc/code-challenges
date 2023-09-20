@@ -197,25 +197,25 @@
 </template>
 
 <script>
-import { defineComponent, nextTick } from "vue";
+import { defineComponent, nextTick } from 'vue'
 // mocks
 import {
   categories as $categories,
-  states as $states,
-} from "src/composables/mock.companies";
+  states as $states
+} from 'src/composables/mock.companies'
 
-import useApi from "src/composables/api";
+import useApi from 'src/composables/api'
 
-const { getCategories, getStates, getCitiesByState, addCompany } = useApi();
+const { getCategories, getStates, getCitiesByState, addCompany } = useApi()
 
 export default defineComponent({
-  name: "AddCompanies",
-  emits: ["close", "success"],
+  name: 'AddCompanies',
+  emits: ['close', 'success'],
   props: {
     open: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   // using `data` in order to reactively update the lists
   data() {
@@ -223,105 +223,105 @@ export default defineComponent({
       categories: $categories.data,
       states: $states,
       company: {
-        name: "",
-        email: "",
-        cnpj: "",
-        whatsapp_phone: "",
-        representantive_user: "",
-        category_id: "",
-        city_id: "",
-        state_id: "",
-        latitude: "",
-        longitude: "",
-        notes: "",
+        name: '',
+        email: '',
+        cnpj: '',
+        whatsapp_phone: '',
+        representantive_user: '',
+        category_id: '',
+        city_id: '',
+        state_id: '',
+        latitude: '',
+        longitude: '',
+        notes: ''
       },
-      cities: [],
-    };
+      cities: []
+    }
   },
   mounted() {
     nextTick(async () => {
-      this.$refs.wrapper.addEventListener("click", (e) => {
-        if (e.target.id === "addCompanies") {
-          this.$emit("close", false);
+      this.$refs.wrapper.addEventListener('click', (e) => {
+        if (e.target.id === 'addCompanies') {
+          this.$emit('close', false)
         }
-      });
+      })
 
       try {
         const [categories, states] = await Promise.all([
           getCategories(),
-          getStates(),
-        ]);
+          getStates()
+        ])
 
-        this.categories = categories;
-        this.states = states;
+        this.categories = categories
+        this.states = states
       } catch (err) {
         console.error(
           `%cErro nas chamadas de API[Cadastro de Empresas]: ${err.message}`,
-          "background-color: red; color: white; padding: 4px;"
-        );
+          'background-color: red; color: white; padding: 4px;'
+        )
         console.log(
           `%cUsando dados 'mockados'`,
-          "background-color: #0e044a; color: #f8f8f8; padding: 4px;"
-        );
+          'background-color: #0e044a; color: #f8f8f8; padding: 4px;'
+        )
       }
-    });
+    })
   },
   methods: {
     resetForm() {
       this.company = Object.fromEntries(
-        Object.keys(this.company).map((key) => [key, ""])
-      );
+        Object.keys(this.company).map((key) => [key, ''])
+      )
     },
     // add option to filter in q-select
     filterStates(val, update) {
       if (!Array.isArray(this.states)) {
-        return;
+        return
       }
 
-      const stateCopy = [...this.states];
+      const stateCopy = [...this.states]
 
-      if (val === "") {
+      if (val === '') {
         update(() => {
-          this.states = stateCopy;
-        });
-        return;
+          this.states = stateCopy
+        })
+        return
       }
 
       update(() => {
-        const needle = val.toLowerCase();
+        const needle = val.toLowerCase()
 
         this.states = stateCopy.filter((v) => {
-          const stringValue = String(v.letter);
-          return stringValue.toLowerCase().includes(needle);
-        });
-      });
+          const stringValue = String(v.letter)
+          return stringValue.toLowerCase().includes(needle)
+        })
+      })
     },
     filterCities(val, update) {
       if (!Array.isArray(this.cities)) {
-        return;
+        return
       }
 
-      const stateCopy = [...this.cities];
+      const stateCopy = [...this.cities]
 
-      if (val === "") {
+      if (val === '') {
         update(() => {
-          this.cities = stateCopy;
-        });
-        return;
+          this.cities = stateCopy
+        })
+        return
       }
 
       update(() => {
-        const needle = val.toLowerCase();
+        const needle = val.toLowerCase()
 
         this.cities = stateCopy.filter((v) => {
-          const stringValue = String(v.title);
-          return stringValue.toLowerCase().includes(needle);
-        });
-      });
+          const stringValue = String(v.title)
+          return stringValue.toLowerCase().includes(needle)
+        })
+      })
     },
     onReset() {
-      this.resetForm();
-      this.$emit("close", false);
+      this.resetForm()
+      this.$emit('close', false)
     },
     async onSubmit() {
       const {
@@ -333,8 +333,8 @@ export default defineComponent({
         state_id,
         city_id,
         latitude,
-        longitude,
-      } = this.company;
+        longitude
+      } = this.company
       // check if all fields are filled but 'representantive_user' and 'notes'
 
       if (
@@ -349,93 +349,93 @@ export default defineComponent({
         longitude
       ) {
         // before submit remove mask from cnpj (mask="##.###.###/####-##") and whatsapp_phone (mask="(##) #####-####")
-        this.company.cnpj = this.company.cnpj.replace(/\D/g, "");
+        this.company.cnpj = this.company.cnpj.replace(/\D/g, '')
         this.company.whatsapp_phone = this.company.whatsapp_phone.replace(
           /\D/g,
-          ""
-        );
+          ''
+        )
 
         this.$q.loading.show({
-          message: "Cadastrando empresa...",
+          message: 'Cadastrando empresa...',
           spinnerSize: 100,
-          spinnerColor: "grey",
-        });
+          spinnerColor: 'grey'
+        })
 
         try {
           await addCompany(this.company)
             .then((res) => {
               this.$q.notify({
-                type: "positive",
+                type: 'positive',
                 message: `Empresa ${res.name} cadastrada com sucesso!`,
-                position: "top",
-                timeout: 2000,
-              });
-              this.$emit("success", res);
-              this.resetForm();
-              this.$emit("close", false);
+                position: 'top',
+                timeout: 2000
+              })
+              this.$emit('success', res)
+              this.resetForm()
+              this.$emit('close', false)
             })
             .catch((err) => {
-              const { errors } = err;
+              const { errors } = err
 
               Object.keys(errors).forEach((key) => {
                 this.$q.notify({
-                  type: "warning",
+                  type: 'warning',
                   message: errors[key][0],
-                  position: "top-right",
+                  position: 'top-right',
                   timeout: 7000,
-                  progress: true,
-                });
-              });
+                  progress: true
+                })
+              })
             })
             .finally(() => {
-              this.$q.loading.hide();
-            });
+              this.$q.loading.hide()
+            })
         } catch (err) {
-          this.$q.loading.hide();
+          this.$q.loading.hide()
           console.error(
             `%cErro nas chamadas de API[Cadastro de Empresas]: ${err.message}`,
-            "background-color: red; color: white; padding: 4px;"
-          );
+            'background-color: red; color: white; padding: 4px;'
+          )
         }
       } else {
         this.$q.notify({
-          type: "negative",
-          message: "Preencha todos os campos obrigatórios",
-          position: "top",
-          timeout: 2000,
-        });
+          type: 'negative',
+          message: 'Preencha todos os campos obrigatórios',
+          position: 'top',
+          timeout: 2000
+        })
       }
-    },
+    }
   },
   watch: {
-    async "company.state_id"(newVal) {
-      if (!newVal) return;
+    async 'company.state_id'(newVal) {
+      if (!newVal) return
       // get cities by state
       try {
         this.$q.loading.show({
-          message: "Carregando cidades...",
+          message: 'Carregando cidades...',
           spinnerSize: 100,
-          spinnerColor: "grey",
-        });
-        const cities = await getCitiesByState(newVal);
-        this.cities = cities;
-        this.$q.loading.hide();
+          spinnerColor: 'grey'
+        })
+        const cities = await getCitiesByState(newVal)
+        this.cities = cities
+        this.$q.loading.hide()
       } catch (err) {
-        this.$q.loading.hide();
+        this.$q.loading.hide()
         this.$q.notify({
-          type: "negative",
-          message: "Erro ao buscar cidades",
-          position: "top",
-          timeout: 2000,
-        });
+          type: 'negative',
+          message: 'Erro ao buscar cidades',
+          position: 'top',
+          timeout: 2000
+        })
         console.error(
           `%cErro nas chamadas de API[Cadastro de Empresas]: ${err.message}`,
-          "background-color: red; color: white; padding: 4px;"
-        );
+          'background-color: red; color: white; padding: 4px;'
+        )
       }
-    },
-  },
-});
+    }
+  }
+})
 </script>
 <style lang="scss" scoped>
 #addCompanies {
@@ -577,7 +577,7 @@ export default defineComponent({
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    background-image: url("/icons/angle-small-down.svg");
+    background-image: url('/icons/angle-small-down.svg');
     background-repeat: no-repeat;
     background-position-x: 98%;
     background-position-y: 50%;

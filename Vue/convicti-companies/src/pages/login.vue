@@ -27,89 +27,89 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
-import useApi from "src/composables/api";
+import { defineComponent, ref } from 'vue'
+import useApi from 'src/composables/api'
 
-const { login } = useApi();
+const { login } = useApi()
 
 export default defineComponent({
-  name: "LoginPage",
+  name: 'LoginPage',
   setup() {
     const form = ref({
-      email: "",
-      password: "",
-    });
-    const login = ref(false);
+      email: '',
+      password: ''
+    })
+    const login = ref(false)
     return {
       form,
-      login,
-    };
+      login
+    }
   },
   methods: {
     async onSubmit() {
       // check if the form is valid
       if (!this.form.email || !this.form.password) {
         this.$q.notify({
-          color: "info",
-          message: "Preencha todos os campos",
-          position: "bottom",
+          color: 'info',
+          message: 'Preencha todos os campos',
+          position: 'bottom',
           timeout: 2000,
-          progress: true,
-        });
-        return;
+          progress: true
+        })
+        return
       }
 
       try {
-        this.login = true;
+        this.login = true
         this.$q.loading.show({
-          message: "Fazendo login...",
+          message: 'Fazendo login...',
           spinnerSize: 100,
-          spinnerColor: "grey",
-        });
+          spinnerColor: 'grey'
+        })
         await login({ ...this.form })
           .then((res) => {
-            this.login = false;
-            this.$q.loading.hide();
+            this.login = false
+            this.$q.loading.hide()
 
             if (!res.access_token) {
               this.$q.notify({
-                color: "negative",
-                message: "Erro inesperado ao fazer login, tente novamente",
-                position: "bottom",
+                color: 'negative',
+                message: 'Erro inesperado ao fazer login, tente novamente',
+                position: 'bottom',
                 timeout: 4000,
-                progress: true,
-              });
-              return;
+                progress: true
+              })
+              return
             }
 
-            localStorage.setItem("token", res.access_token);
-            this.$router.push("/");
+            localStorage.setItem('token', res.access_token)
+            this.$router.push('/')
           })
           .catch((err) => {
-            this.login = false;
-            this.$q.loading.hide();
+            this.login = false
+            this.$q.loading.hide()
             this.$q.notify({
-              color: "negative",
+              color: 'negative',
               message: err.message,
-              position: "bottom",
+              position: 'bottom',
               timeout: 4000,
-              progress: true,
-            });
-          });
+              progress: true
+            })
+          })
       } catch (error) {
-        this.login = false;
-        this.$q.loading.hide();
+        this.login = false
+        this.$q.loading.hide()
         console.error(
           `%c${error}`,
-          "background-color: red; color: white; padding: 4px;"
-        );
+          'background-color: red; color: white; padding: 4px;'
+        )
       }
-    },
+    }
   },
   mounted() {
-    this.$q.loading.hide();
-  },
-});
+    this.$q.loading.hide()
+  }
+})
 </script>
 <style lang="scss" scoped>
 #login {
@@ -137,7 +137,7 @@ export default defineComponent({
         color: white;
       }
       input {
-        font-family: "Nunito Sans";
+        font-family: 'Nunito Sans';
         font-size: 1.6rem;
         font-weight: 500;
         width: 100%;

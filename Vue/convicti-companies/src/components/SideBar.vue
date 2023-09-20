@@ -33,49 +33,49 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
-  name: "SideBar",
+  name: 'SideBar',
   setup() {
-    const showSideBar = ref(true);
+    const showSideBar = ref(true)
 
     const resizeHandler = () => {
       if (window.innerWidth > 1054) {
-        showSideBar.value = true;
+        showSideBar.value = true
       } else {
-        showSideBar.value = false;
+        showSideBar.value = false
       }
-    };
+    }
 
-    window.addEventListener("resize", resizeHandler);
+    window.addEventListener('resize', resizeHandler)
 
-    resizeHandler();
+    resizeHandler()
 
     return {
       showSideBar,
-      resizeHandler,
-    };
+      resizeHandler
+    }
   },
   mounted() {},
   unmounted() {
-    window.removeEventListener("resize", this.resizeHandler);
+    window.removeEventListener('resize', this.resizeHandler)
   },
   methods: {
     logoff() {
-      localStorage.removeItem("token");
+      localStorage.removeItem('token')
 
-      this.$router.push("/login");
+      this.$router.push('/login')
 
       this.$q.notify({
-        color: "positive",
-        position: "top",
-        message: "Você saiu do sistema!",
+        color: 'positive',
+        position: 'top',
+        message: 'Você saiu do sistema!',
         timeout: 1500
-      });
-    },
-  },
-});
+      })
+    }
+  }
+})
 </script>
 <style lang="scss" scoped>
 #sidebar {
@@ -102,7 +102,6 @@ export default defineComponent({
     @media screen and (max-width: 320px) {
       left: 18rem;
     }
-   
 
     &.hide {
       left: 2rem;

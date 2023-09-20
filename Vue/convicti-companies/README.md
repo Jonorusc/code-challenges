@@ -1,4 +1,5 @@
 # The Challenge
+
 The overall proposal of the system is to provide an area where it should be possible to manage and query companies based on a general map.
 
 ## Installation Instructions
@@ -24,17 +25,18 @@ Make sure you have the following tools installed on your system:
    ```
 
 2. **Install dependencies:**
+
    ```sh
-   yarn 
+   yarn
    ## OR
    yarn install
    ```
 
 3. **Set up environment variables:**
-Rename the .env.example file to .env and configure the necessary environment variables such as API keys, database settings, etc.
+   Rename the .env.example file to .env and configure the necessary environment variables such as API keys, database settings, etc.
 
 4. **Start the application:**
    ```sh
    yarn dev
    ```
-After loading, the page will automatically open in your default web browser.
+   After loading, the page will automatically open in your default web browser.

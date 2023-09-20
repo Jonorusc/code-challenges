@@ -7,17 +7,17 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
-import jwt_decode from "jwt-decode";
+import { defineComponent } from 'vue'
+import jwt_decode from 'jwt-decode'
 
 export default defineComponent({
-  name: "MainLayout",
+  name: 'MainLayout',
 
   setup() {
-    return {};
+    return {}
   },
   mounted() {
-    this.$q.loading.hide();
-  },
-});
+    this.$q.loading.hide()
+  }
+})
 </script>

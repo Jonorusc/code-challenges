@@ -11,7 +11,7 @@ html {
 }
 
 body {
-  font-family: "Nunito Sans", sans-serif;
+  font-family: 'Nunito Sans', sans-serif;
   overflow: hidden;
 }
 
@@ -56,7 +56,8 @@ body {
   padding: 0 12px;
   background: rgb(255 255 255);
   border-radius: 4px;
-  transition: box-shadow 0.36s cubic-bezier(0.4, 0, 0.2, 1),
+  transition:
+    box-shadow 0.36s cubic-bezier(0.4, 0, 0.2, 1),
     background-color 0.36s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 0 0.3rem rgba(0, 0, 0, 0.1);
   width: 30rem;
