@@ -7,7 +7,6 @@ This project demonstrates component reusability in a React application. It inclu
 - [Getting Started](#getting-started)
 - [Usage](#usage)
 - [Folder Structure](#folder-structure)
-- [Contributing](#contributing)
 - [License](#license)
 
 ## Getting Started
