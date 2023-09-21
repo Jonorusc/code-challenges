@@ -66,7 +66,7 @@ function App() {
 
   return (
     <div id="app-content">
-      <h2>Let's go create our modal. How about start choosing the content, heading and actions?</h2>
+      <h2>Let's go create our modal. How about start choosing the heading and content?</h2>
 
       {/* choose content and heading */}
       <div className="choose-content">
