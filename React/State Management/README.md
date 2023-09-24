@@ -126,7 +126,7 @@ export default Login
 
 ### UserProfile
 
-The ``UserProfile.tsx` component displays the user's profile information, including their username. If the user is not authenticated, it displays a message indicating that the user is not logged in.
+The `UserProfile.tsx` component displays the user's profile information, including their username. If the user is not authenticated, it displays a message indicating that the user is not logged in.
 
 code:
 
