@@ -92,3 +92,7 @@ The ID of the 'Resultado' to update should be provided as a parameter in the URL
 For all endpoints, the API returns a JSON object. The exact contents of this object will depend on the operation and whether it was successful.
 
 In case of an error, the API will return a JSON object with an 'error' key and a string value describing the error.
+
+### Why did i choose to use (ORM) Prisma?
+
+I chose to use Prisma ORM because it is a very powerful tool that allows you to work with different databases in a very simple way, it is also very easy to use and the project needed to be easy to use and maintain.
