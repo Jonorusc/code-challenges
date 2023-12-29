@@ -39,7 +39,7 @@ yarn start
 
 # Resultados API
 
-This API provides CRUD (Create, Read, Update, Delete) operations for 'Resultados' records in a database.
+This API provides CRUD (Create, Read, Delete) operations for 'Resultados' records in a database.
 
 ## Endpoints
 
