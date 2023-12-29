@@ -1,0 +1,33 @@
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum Bimestre {
+  PRIMEIRO
+  SEGUNDO
+  TERCEIRO
+  QUARTO
+}
+
+enum Disciplina {
+  Biologia
+  Artes
+  Geografia
+  Sociologia
+}
+
+model Resultado {
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  bimestre     Bimestre
+  disciplina   Disciplina
+  nota         Float
+  criadoEm     DateTime   @default(now())
+  atualizadoEm DateTime   @updatedAt
+}
