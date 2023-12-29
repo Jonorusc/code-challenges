@@ -6,13 +6,14 @@ import { prisma } from "../server"
  *
  * POST /mb/api/v1/resultados
  * Required fields in body: bimestre, disciplina, nota
+ * nota must be a number between 0 and 10
  *
  * ```javascript
  * Example request body:
  * {
  *    bimestre: "Primeiro",
  *    disciplina: "Artes",
- *    nota: "10"
+ *    nota: "10" 
  * }
  * ```
  *
@@ -45,6 +46,10 @@ export const createResultado = async (req: Request, res: Response) => {
 
     if (!bimestre || !disciplina || !nota) {
       throw new Error("Please provide all required fields.")
+    }
+
+    if(nota < 0 || nota > 10) { 
+      throw new Error("Nota must be a number between 0 and 10")
     }
 
     const newResultado = await prisma.resultado.create({
