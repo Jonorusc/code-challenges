@@ -20,20 +20,23 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   :root {
-    --background: #0F0F0F; 
-    --background-light: #0F0F0FB2;
-    --primary: #ECDEEE;
-    --primary-active: #E9FF1A;
+    --border: 66, 66, 66;
+    --background: 15, 15, 15;
+    --background-light: 15, 15, 15, 0.7;
+    --primary: 236, 237, 238;
+    --text-primary: 236, 237, 238;
+    --text-secondary: 109, 109, 109;
+    --primary-active: 233, 255, 26;
 
-    --blue: #05A2C2;
-    --purple: #9B19C2;
-    --orange: #C26719;
-    --pink: #CC4090;
-    --white: #FFFFFF;
-    --black: #000000;
-    --green: #05FF00;
-    --red: #FF5964;
-    --yellow: #FFFF99;
+    --blue: 5, 162, 194;
+    --purple: 155, 25, 194;
+    --orange: 194, 103, 25;
+    --pink: 204, 64, 144;
+    --white: 255, 255, 255;
+    --black: 0, 0, 0;
+    --green: 5, 255, 0;
+    --red: 255, 89, 100;
+    --yellow: 255, 255, 153;
   }
   
 `
