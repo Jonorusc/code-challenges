@@ -9,6 +9,7 @@ import Grid from '@/components/ui/Grid'
 import Icon from '@/components/ui/Icon/svg'
 import NoSsr from '@/components/ui/NoSsr'
 import Typography from '@/components/ui/Text'
+import ToolTip from '@/components/ui/Tooltip'
 import { useModal } from '@/hooks/use-modal'
 import { Resultado } from '@/hooks/use-resultado'
 import React from 'react'
@@ -26,21 +27,31 @@ const Bimestre = ({ bismestre, resultados }: BimestreProps) => {
           <Typography $color="white" $size="1.8rem" $weight={500}>
             <h1>Bimestre {Number(bismestre + 1)}</h1>
           </Typography>
-          <Button
-            $active
-            onClick={() => {
-              onOpen('create-resultado', {
-                bimestre: Number(bismestre + 1)
-              })
-            }}
-          >
-            <Flex $gapY="1rem" $align="center">
-              <Typography $color="background" $size="1.6rem" $weight={600}>
-                <h5>Lançar nota</h5>
+          <ToolTip
+            $arrow
+            $position="top"
+            $content={
+              <Typography $color="black" $size="1.3rem">
+                <span>Adicionar</span>
               </Typography>
-              <Icon name="plus" size={24} color="background" />
-            </Flex>
-          </Button>
+            }
+          >
+            <Button
+              $active
+              onClick={() => {
+                onOpen('create-resultado', {
+                  bimestre: Number(bismestre + 1)
+                })
+              }}
+            >
+              <Flex $gapY="1rem" $align="center">
+                <Typography $color="background" $size="1.6rem" $weight={600}>
+                  <h5>Lançar nota</h5>
+                </Typography>
+                <Icon name="plus" size={24} color="background" />
+              </Flex>
+            </Button>
+          </ToolTip>
         </Flex>
         <Grid
           $columns="repeat(auto-fill, minmax(15.7rem, 1fr))"
