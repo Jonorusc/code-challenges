@@ -13,26 +13,26 @@ import { prisma } from "../server"
  * {
  *    bimestre: "Primeiro",
  *    disciplina: "Artes",
- *    nota: "10" 
+ *    nota: 10
  * }
  * ```
  *
- * ```javascript	
+ * ```javascript
  * Example response:
  * {
  *   id: 1,
  *   bimestre: "Primeiro",
  *   disciplina: "Artes",
- *   nota: "10",
+ *   nota: 10,
  *   criadoEm: "2021-09-29T00:00:00.000Z",
  *   atualizadoEm: "2021-09-29T00:00:00.000Z"
  * }
  * ```
- * 
+ *
  * Responses:
  * 200: Returns a JSON object with the created 'Resultado'.
  * 500: Returns a JSON object with an error message if something goes wrong.
- * 
+ *
  * ```javascript
  * Example error response:
  * {
@@ -45,11 +45,20 @@ export const createResultado = async (req: Request, res: Response) => {
     const { bimestre, disciplina, nota } = req.body
 
     if (!bimestre || !disciplina || !nota) {
-      throw new Error("Please provide all required fields.")
+      throw new Error("Preencha todos os campos obrigatórios")
     }
 
-    if(nota < 0 || nota > 10) { 
-      throw new Error("Nota must be a number between 0 and 10")
+    if (nota < 0 || nota > 10 || isNaN(nota)) {
+      throw new Error("Nota precisa ser de 0 a 10")
+    }
+
+    // checks if there is any other resultado with the same bimestre and disciplina
+    const resultadoExists = await prisma.resultado.findFirst({
+      where: { bimestre, disciplina },
+    })
+
+    if (resultadoExists) {
+      return res.status(400).json({ error: "Já existe uma nota cadastrada para essa disciplina nesse bimestre" })
     }
 
     const newResultado = await prisma.resultado.create({
@@ -64,10 +73,9 @@ export const createResultado = async (req: Request, res: Response) => {
       throw new Error("Internal Server Error. Please try again later.")
     }
 
-    res.json(newResultado)
-  } catch (e) {
-    console.error(`Error: ${e}`)
-    res.status(500).json({ error: 'Something went wrong when trying to create your "Resultado". Please try again later.' })
+    return res.json(newResultado)
+  } catch (error) {
+    return res.status(500).json({ error })
   }
 }
 
@@ -99,10 +107,22 @@ export const getAllResultados = async (req: Request, res: Response) => {
       throw new Error("Internal Server Error. Please try again later.")
     }
 
-    res.json({ data: allResultados, count: allResultados.length })
+    // rearrange the data to match { data: { primeiro, segundo, terceiro, quarto }, count: number }
+    const primeiro = allResultados.filter((resultado) => resultado.bimestre === "PRIMEIRO")
+    const segundo = allResultados.filter((resultado) => resultado.bimestre === "SEGUNDO")
+    const terceiro = allResultados.filter((resultado) => resultado.bimestre === "TERCEIRO")
+    const quarto = allResultados.filter((resultado) => resultado.bimestre === "QUARTO")
+
+    const data = {
+      primeiro,
+      segundo,
+      terceiro,
+      quarto,
+    }
+
+    return res.json({ data, count: allResultados.length })
   } catch (e) {
-    console.error(`Error: ${e}`)
-    res.status(500).json({
+    return res.status(500).json({
       error: 'Something went wrong when trying to get all "Resultados". Please try again later.',
     })
   }
@@ -131,14 +151,12 @@ export const deleteResultado = async (req: Request, res: Response) => {
     })
 
     if (!resultado) {
-      res.status(404).json({ error: `Resultado with id ${id} not found` })
-      return
+      return res.status(404).json({ error: `Erro inesperado, por favor tente novamente mais tarde` })
     }
 
-    res.json({ message: `Resultado with id ${id} deleted successfully` })
-  } catch (e) {
-    console.error(`Error: ${e}`)
-    res.status(500).json({ error: "Something went wrong when trying to delete the Resultado. Please try again later." })
+    return res.json({ message: `Resultado with id ${id} deleted successfully` })
+  } catch (error) {
+    return res.status(500).json({ error })
   }
 }
 
@@ -152,9 +170,7 @@ export const deleteResultado = async (req: Request, res: Response) => {
  * ```javascript
  * params: { id: 1 }
  * {
- *  bimestre: "Segundo",
- *  disciplina: "Artes",
- *  nota: "10"
+ *  nota: 10
  * }
  * ```
  *
@@ -171,25 +187,29 @@ export const updateResultado = async (req: Request, res: Response) => {
   try {
     if (!req.params.id) throw new Error("Please provide the id of the Resultado you want to delete")
     const id = req.params.id as string
-    const { bimestre, disciplina, nota } = req.body
+    const { nota } = req.body
+
+    if (!nota) {
+      throw new Error("Prencha todos os campos obrigatórios")
+    }
+
+    if (nota < 0 || nota > 10 || isNaN(nota)) {
+      throw new Error("Nota precisa ser de 0 a 10")
+    }
 
     const updatedResultado = await prisma.resultado.update({
       where: { id: id },
       data: {
-        bimestre,
-        disciplina,
-        nota,
+        nota: Number(nota),
       },
     })
 
     if (!updatedResultado) {
-      res.status(404).json({ error: `Resultado with id ${id} not found` })
-      return
+      return res.status(404).json({ error: `Erro inesperado, tente novamente mais tarde.` })
     }
 
-    res.json({ data: updatedResultado })
-  } catch (e) {
-    console.error(`Error: ${e}`)
-    res.status(500).json({ error: "Something went wrong when trying to update the Resultado. Please try again later." })
+    return res.json({ data: updatedResultado })
+  } catch (error) {
+    return res.status(500).json({ error })
   }
 }

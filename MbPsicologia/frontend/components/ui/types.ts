@@ -1,3 +1,12 @@
+export type Resultado = {
+  id?: string
+  bimestre: 'PRIMEIRO' | 'SEGUNDO' | 'TERCEIRO' | 'QUARTO'
+  disciplina: 'Artes' | 'Sociologia' | 'Biologia' | 'Geografia'
+  nota: number
+  criadoEm: Date
+  editadoEm?: Date
+}
+
 export type WIDTH =
   | '100%'
   | '100vw'

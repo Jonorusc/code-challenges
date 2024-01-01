@@ -1,25 +1,30 @@
+'use clientc'
 import * as S from './styles'
 
-import { WIDTH, INPUT_TYPES } from '@/components/ui/types'
+import { INPUT_TYPES } from '@/components/ui/types'
 
 import { useState } from 'react'
+import Typography from '../Text'
+import Flex from '../Flex'
 
 export type InputProps = {
-  $width?: WIDTH
+  $width?: string
   placeholder?: string
   label?: string
   type?: INPUT_TYPES
   name?: string
-  initalValue?: string
+  initalValue?: string | number
   onChange?: (value: string) => void
-  error?: string
+  $error?: string
   disabled?: boolean
   required?: boolean
+  $max?: number
+  $min?: number
 } & React.InputHTMLAttributes<HTMLInputElement>
 
 const Input = ({
   $width,
-  error,
+  $error,
   initalValue,
   label,
   name,
@@ -27,7 +32,8 @@ const Input = ({
   placeholder,
   type = 'text',
   disabled = false,
-  required = false
+  required = false,
+  ...props
 }: InputProps) => {
   const [value, setValue] = useState(initalValue || '')
 
@@ -38,19 +44,25 @@ const Input = ({
     !!onChange && onChange(newValue)
   }
   return (
-    <S.Wrapper>
-      {label && <label htmlFor={name}>{label}</label>}
-      <input
-        type={type}
-        name={name}
-        id={name}
-        placeholder={placeholder || ''}
-        onChange={handleChange}
-        value={value}
-        disabled={disabled}
-        required={required}
-      />
-    </S.Wrapper>
+    <Flex $direction="column">
+      <S.Wrapper $width={$width}>
+        {label && <label htmlFor={name}>{label}</label>}
+        <input
+          type={type}
+          name={name}
+          id={name}
+          placeholder={placeholder || ''}
+          onChange={handleChange}
+          value={value}
+          disabled={disabled}
+          required={required}
+          {...props}
+        />
+      </S.Wrapper>
+      {$error && (
+        <Typography $size="1.2rem" $color="red"><span>{$error}</span></Typography>
+      )}
+    </Flex>
   )
 }
 

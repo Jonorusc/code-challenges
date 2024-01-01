@@ -4,7 +4,7 @@ import { TypographyProps } from '.'
 
 type WrapperProps = Omit<TypographyProps, 'children'>
 
-export const Wrapper = styled.div<WrapperProps>`
+export const Wrapper = styled.span<WrapperProps>`
   ${({ $color, $bgColor, $weight, $size }) => css`
     ${$bgColor &&
     css`
@@ -20,5 +20,10 @@ export const Wrapper = styled.div<WrapperProps>`
         `};
     font-weight: ${$weight};
     font-size: ${$size};
+
+    h1 {
+      font-size: inherit;
+      font-weight: inherit;
+    }
   `}
 `

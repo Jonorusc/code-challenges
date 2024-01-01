@@ -1,3 +1,4 @@
+'use client'
 import * as S from "./styles"
 
 import type { COLORS } from "@/components/ui/types"
@@ -9,9 +10,9 @@ export type ButtonProps = {
   $bgColor?: COLORS
 } & React.ButtonHTMLAttributes<HTMLButtonElement>
 
-const Button = ({ children, $active, $color = "background", $bgColor = "yellow" }: ButtonProps) => {
+const Button = ({ children, $active, $color = "background", $bgColor = "primary-active", ...props }: ButtonProps) => {
   return (
-    <S.Wrapper $active={$active} $color={$color} $bgColor={$bgColor}>
+    <S.Wrapper $active={$active} $color={$color} $bgColor={$bgColor} {...props}>
       {children}
     </S.Wrapper>
   )

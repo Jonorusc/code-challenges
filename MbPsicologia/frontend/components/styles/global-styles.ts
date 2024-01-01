@@ -1,4 +1,4 @@
-import { createGlobalStyle } from "styled-components"
+import { createGlobalStyle } from 'styled-components'
 
 export const GlobalStyles = createGlobalStyle`
   * {
@@ -7,16 +7,11 @@ export const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    user-select: none;
   }
 
   html {
     font-size: 62.5%;
-  }
-
-  body {
-    &::-webkit-scrollbar {
-      height: 0;
-    }
   }
 
   :root {
@@ -38,5 +33,14 @@ export const GlobalStyles = createGlobalStyle`
     --red: 255, 89, 100;
     --yellow: 255, 255, 153;
   }
+
+  body {
+    background-color: rgba(var(--background), 1);
+    &::-webkit-scrollbar {
+      height: 0;
+    }
+  }
+
+  
   
 `

@@ -4,47 +4,40 @@ import styled, { css } from 'styled-components'
 import type {
   WIDTH,
   HEIGHT,
-  ALIGN,
-  ALIGNCONTENT,
-  ALINGSELF,
-  DIRECTION,
-  DIRECTION_FLOW,
   JUSTIFY,
-  COLORS
+  ALIGN,
+  PLACEITEMS,
 } from '@/components/ui/types'
 
-const Flex = styled.div<{
-  $direction?: DIRECTION
-  $flow?: DIRECTION_FLOW
+const Grid = styled.div<{
+  $columns?: string
+  $rows?: string
+  $placeItems?: PLACEITEMS
+  $justify?: JUSTIFY
   $align?: ALIGN
-  $alingSelf?: ALINGSELF
-  $alingContent?: ALIGNCONTENT
   $gap?: string
   $gapX?: string
   $gapY?: string
-  $justify?: JUSTIFY
   $padding?: string
   $margin?: string
   $width?: WIDTH
   $height?: HEIGHT
-  $background?: COLORS
 }>`
   ${({
-    $direction,
-    $flow,
+    $columns,
+    $rows,
+    $placeItems,
+    $justify,
     $align,
-    $alingSelf,
     $gap,
     $gapX,
     $gapY,
-    $justify,
     $padding,
     $margin,
     $width,
     $height,
   }) => css`
-    display: flex;
-    flex-direction: ${$direction || 'row'};
+    display: grid;
     gap: ${$gap || '0'};
     row-gap: ${$gapX || '0'};
     column-gap: ${$gapY || '0'};
@@ -52,15 +45,17 @@ const Flex = styled.div<{
     margin: ${$margin || '0'};
     width: ${$width || 'auto'};
     height: ${$height || 'auto'};
-    ${!!$flow && `flex-flow: ${$flow};`}
-    ${!!$align && `align-items: ${$align};`}
-    ${!!$alingSelf && `align-self: ${$alingSelf};`}
-    justify-content: ${$justify || 'unset'};
 
-    @media (max-width: 425px) {
+    ${!!$columns && `grid-template-columns: ${$columns};`}
+    ${!!$rows && `grid-template-rows: ${$rows};`};
+    ${!!$placeItems && `place-items: ${$placeItems};`}
+    ${!!$justify && `justify-content: ${$justify};`}
+    ${!!$align && `align-items: ${$align};`}
+
+    @media screen and (max-width: 425px) {
       width: 100%;
     }
   `}
 `
 
-export default Flex
+export default Grid

@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express"
+import cors from "cors"
 import { PrismaClient } from "@prisma/client"
 import PostRouter from "./routes"
 
@@ -17,6 +18,7 @@ async function main() {
     await prisma.$connect()
 
     app.use(express.json())
+    app.use(cors())
     app.use("/mb/api/v1", PostRouter)
 
     app.all("*", (req: Request, res: Response) => {

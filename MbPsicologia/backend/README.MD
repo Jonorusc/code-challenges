@@ -34,6 +34,11 @@ DATABASE_URL="mongodb+srv://username:password@cluster.****.mongodb.net/database"
 ## Run the application
 
 ```bash
+yarn db:generate # Generate the prisma client
+yarn db:push # Push the schema to the database
+```
+
+```bash
 yarn start
 ```
 

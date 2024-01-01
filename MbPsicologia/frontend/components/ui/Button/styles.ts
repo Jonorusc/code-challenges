@@ -21,7 +21,7 @@ export const Wrapper = styled.button<WrapperProps>`
       `
     };
     line-height: 1.8rem;
-    padding: 1.6rem 3.2rem;
+    padding: 0.6rem 3.2rem;
     box-shadow: 0px 20px 60px 0px rgba(0, 0, 0, 0.08);
     outline: none;
     border: none;
@@ -32,7 +32,6 @@ export const Wrapper = styled.button<WrapperProps>`
       
     &:focus,
     &:active {
-      translate: 0 0.2rem;
       outline: solid 0.2rem rgba(var(--${$bgColor}), 1);
       outline-offset: -0.1rem;
       border-color: rgba(var(--${$bgColor}), 1)
@@ -40,6 +39,10 @@ export const Wrapper = styled.button<WrapperProps>`
       rgba(var(--${$bgColor}), 1),
         inset 0 0 0 0.2rem
         rgba(var(--${$bgColor}), 1);
+    }
+
+    &:active {
+      translate: 0 0.2rem;
     }
   `}
 `

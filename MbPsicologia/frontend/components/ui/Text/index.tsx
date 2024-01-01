@@ -1,3 +1,4 @@
+'use client'
 import * as S from './styles'
 
 import type { COLORS } from '@/components/ui/types'
