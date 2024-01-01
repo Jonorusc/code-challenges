@@ -14,7 +14,7 @@ I used Express to create the API, Prisma for the ORM, and MongoDB as the databas
 ```bash
 git clone https://github.com/Jonorusc/code-challenges.git
 cd code-challenges/MbPsicologia
-cd backend
+cd frontend
 ```
 
 ## Install dependencies
