@@ -47,7 +47,7 @@ yarn dev
 
 I used ReactJS to create the application, NextJS to facilitate the creation of routes, Styled Components to facilitate the styling of components, and Framer Motion to create satisfying animations.
 
-## Video demonstrativo
+## Demonstration video
 
 https://github.com/Jonorusc/code-challenges/assets/56327459/86d04ca5-a50f-4c0a-bbd1-21d47bfc46d6
 
