@@ -139,7 +139,6 @@ const DialogCreate = () => {
                 </Button>
               </Flex>
               <Input
-                initalValue={nota}
                 type="number"
                 min={0}
                 max={10}
