@@ -43,6 +43,7 @@ const Bimestre = ({ bismestre, resultados }: BimestreProps) => {
                   bimestre: Number(bismestre + 1)
                 })
               }}
+              aria-label="create a new resultado"
             >
               <Flex $gapY="1rem" $align="center">
                 <Typography $color="background" $size="1.6rem" $weight={600}>

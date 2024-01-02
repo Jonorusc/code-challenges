@@ -1,12 +1,13 @@
 'use client'
 import Flex from '@/components/ui/Flex'
 import Grid from '@/components/ui/Grid'
+import { Wrapper as Button } from '@/components/ui/Button/styles'
+import { Wrapper as Typography } from '@/components/ui/Text/styles'
 import styled, { css } from 'styled-components'
 
 export const BimestreWrapper = styled.div`
-  /* margin-bottom: 3rem; */
   ${Grid} {
-    @media screen and (max-width: 42.5rem) {
+    @media screen and (max-width: 425px) {
       grid-template-columns: repeat(auto-fill, minmax(15.7rem, 1fr));
       row-gap: 7rem;
     }
@@ -18,6 +19,16 @@ export const BimestreWrapper = styled.div`
       align-items: center;
       row-gap: 1rem;
       justify-content: center;
+    }
+  }
+
+  ${Button}[aria-label="create a new resultado"] {
+    @media screen and (max-width: 425px) { 
+      ${Flex} {
+        ${Typography} {
+          display: none;;
+        }
+      }
     }
   }
 `
