@@ -143,7 +143,7 @@ const DialogCreate = () => {
                 type="number"
                 min={0}
                 max={10}
-                $width="5.5vw"
+                $width="8rem"
                 $error={nota < 0 || nota > 10 ? 'Nota de 0 a 10' : ''}
                 placeholder={String(nota)}
                 label="Nota"
