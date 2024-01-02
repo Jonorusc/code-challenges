@@ -33,8 +33,7 @@ export default function Home() {
               ))}
             </>
           )}
-          {!data ||
-            (isValidating && (
+          {isValidating && (
               <Flex
                 $direction="column"
                 $align="center"
@@ -46,7 +45,20 @@ export default function Home() {
                 </Typography>
                 <ReactLoading type="spin" color="#fff" />
               </Flex>
-            ))}
+            )}
+            {!data && (
+              <Flex
+                $direction="column"
+                $align="center"
+                $gapX="2rem"
+                aria-label="loading"
+              >
+                <Typography $size="2rem" $color="white">
+                  <h1>Erro ao buscar os dados. Verifique se o servidor está online</h1>
+                </Typography>
+                <ReactLoading type="spin" color="#fff" />
+              </Flex>
+            )}
         </Flex>
       </AppWrapper>
     </main>
