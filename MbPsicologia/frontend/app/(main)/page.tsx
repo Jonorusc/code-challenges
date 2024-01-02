@@ -9,7 +9,7 @@ import React from 'react'
 import Typography from '@/components/ui/Text'
 
 export default function Home() {
-  const { data } = useResultados()
+  const { data, isValidating } = useResultados()
 
   return (
     <main>
@@ -17,7 +17,7 @@ export default function Home() {
         <Flex
           $direction="column"
           $gapX="4rem"
-          $width="50vw"
+          $width="70vw"
           $margin="5rem auto"
           aria-label="Bimestres"
         >
@@ -33,14 +33,20 @@ export default function Home() {
               ))}
             </>
           )}
-          {!data && (
-            <Flex $direction="column" $align="center" $gapX="2rem">
-              <Typography $size="2rem" $color="white">
-                <h1>Carregando...</h1>
-              </Typography>
-              <ReactLoading type="spin" color="#fff" />
-            </Flex>
-          )}
+          {!data ||
+            (isValidating && (
+              <Flex
+                $direction="column"
+                $align="center"
+                $gapX="2rem"
+                aria-label="loading"
+              >
+                <Typography $size="2rem" $color="white">
+                  <h1>Carregando...</h1>
+                </Typography>
+                <ReactLoading type="spin" color="#fff" />
+              </Flex>
+            ))}
         </Flex>
       </AppWrapper>
     </main>

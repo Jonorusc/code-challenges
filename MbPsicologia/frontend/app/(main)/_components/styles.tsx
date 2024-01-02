@@ -3,7 +3,7 @@ import Flex from '@/components/ui/Flex'
 import Grid from '@/components/ui/Grid'
 import { Wrapper as Button } from '@/components/ui/Button/styles'
 import { Wrapper as Typography } from '@/components/ui/Text/styles'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 
 export const BimestreWrapper = styled.div`
   ${Grid} {
@@ -23,10 +23,10 @@ export const BimestreWrapper = styled.div`
   }
 
   ${Button}[aria-label="create a new resultado"] {
-    @media screen and (max-width: 425px) { 
+    @media screen and (max-width: 425px) {
       ${Flex} {
         ${Typography} {
-          display: none;;
+          display: none;
         }
       }
     }
@@ -39,5 +39,13 @@ export const AppWrapper = styled.div`
       padding: 2rem;
       width: 100%;
     }
+  }
+
+  ${Flex}[aria-label="loading"] {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 2rem;
   }
 `
