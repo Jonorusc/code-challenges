@@ -2,6 +2,9 @@
 
 import * as S from './styles'
 
+// If you wanna use the background and color properties just remove these comments down below
+// I created this component in my new biggest project Twitch Clone. I'm creating it following a hundred percent of what it is. 
+// If you got interested on it I left it as my pinned repositories (the first one). I ensure you'll like it a lot. thank you.
 // import { COLORS } from '@/components/ui/types'
 
 export type ToolTipProps = {
