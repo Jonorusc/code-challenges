@@ -159,12 +159,12 @@ const DialogCreate = () => {
               <Button $active onClick={handleConfirm} disabled={isLoading}>
                 {isLoading ? (
                   <Flex $align="center" $gapY="1rem">
-                    <Typography $size="1.2rem" $color="white">
+                    <Typography $size="1.2rem" $color="black">
                       <span>Salvando...</span>
                     </Typography>
                     <ReactLoading
                       type="spin"
-                      color="#fff"
+                      color="#000"
                       height={16}
                       width={16}
                     />
