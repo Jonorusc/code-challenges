@@ -51,7 +51,7 @@ I used ReactJS to create the application, NextJS to facilitate the creation of r
 
 https://github.com/Jonorusc/code-challenges/assets/56327459/e660e779-13e5-4878-8b9d-a34c466a9501
 
-![image](https://github.com/Jonorusc/code-challenges/assets/56327459/fe14a847-5608-4345-9cda-1c5e1c7972b5)
+![image](https://github.com/Jonorusc/code-challenges/assets/56327459/182aa0bb-5f43-4784-af3c-ba7768e9029c)
 
 ![image](https://github.com/Jonorusc/code-challenges/assets/56327459/e5f1fb7b-de6e-4cc4-81e3-376a3fdfb827)
 
