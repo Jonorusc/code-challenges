@@ -23,7 +23,7 @@ export const BimestreWrapper = styled.div`
   }
 
   ${Button}[aria-label="create a new resultado"] {
-    @media screen and (max-width: 425px) {
+    @media screen and (max-width: 430px) {
       ${Flex} {
         ${Typography} {
           display: none;
