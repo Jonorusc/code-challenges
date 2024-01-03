@@ -49,5 +49,7 @@ I used ReactJS to create the application, NextJS to facilitate the creation of r
 
 ## Demonstration video
 
-https://github.com/Jonorusc/code-challenges/assets/56327459/86d04ca5-a50f-4c0a-bbd1-21d47bfc46d6
+
+
+https://github.com/Jonorusc/code-challenges/assets/56327459/e660e779-13e5-4878-8b9d-a34c466a9501
 
