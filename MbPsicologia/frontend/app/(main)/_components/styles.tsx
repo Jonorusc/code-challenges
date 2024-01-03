@@ -7,7 +7,7 @@ import styled from 'styled-components'
 
 export const BimestreWrapper = styled.div`
   ${Grid} {
-    @media screen and (max-width: 425px) {
+    @media screen and (max-width: 430px) {
       grid-template-columns: repeat(auto-fill, minmax(15.7rem, 1fr));
       row-gap: 7rem;
     }
@@ -35,7 +35,7 @@ export const BimestreWrapper = styled.div`
 
 export const AppWrapper = styled.div`
   ${Flex}[aria-label='Bimestres'] {
-    @media screen and (max-width: 42.5rem) {
+    @media screen and (max-width: 430px) {
       padding: 2rem;
       width: 100%;
     }
