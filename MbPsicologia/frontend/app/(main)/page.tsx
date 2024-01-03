@@ -33,7 +33,7 @@ export default function Home() {
               ))}
             </>
           )}
-          {isValidating && (
+          {isValidating && data && (
               <Flex
                 $direction="column"
                 $align="center"
